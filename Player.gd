@@ -29,6 +29,7 @@ var initial_pos
 @onready var parry_box = $ParryBoxParent/ParryBox
 @onready var explore_fsm = $ExploreStateMachine
 @onready var combat_fsm = $CombatStateMachine
+@onready var fsm_controller = $FSMController
 
 enum State {
 	IDLE,
@@ -47,7 +48,6 @@ enum State {
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	
 	
 	
 

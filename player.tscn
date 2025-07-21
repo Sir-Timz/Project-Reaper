@@ -1,7 +1,8 @@
-[gd_scene load_steps=24 format=3 uid="uid://dj3rwx7pxbayn"]
+[gd_scene load_steps=25 format=3 uid="uid://dj3rwx7pxbayn"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_5copa"]
 [ext_resource type="Script" path="res://ExploreStateMachine.gd" id="2_t60be"]
+[ext_resource type="Script" path="res://FSMController.gd" id="2_yor52"]
 [ext_resource type="Script" path="res://Idle.gd" id="3_lu513"]
 [ext_resource type="Script" path="res://Walk.gd" id="4_p5xwo"]
 [ext_resource type="Script" path="res://Sprint.gd" id="5_qyy84"]
@@ -192,6 +193,50 @@ collision_layer = 2
 script = ExtResource("1_5copa")
 rotation_speed = 20.0
 
+[node name="FSMController" type="Node" parent="." node_paths=PackedStringArray("initial_fsm")]
+script = ExtResource("2_yor52")
+initial_fsm = NodePath("ExploreStateMachine")
+
+[node name="ExploreStateMachine" type="Node" parent="FSMController" node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_t60be")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="FSMController/ExploreStateMachine"]
+script = ExtResource("3_lu513")
+
+[node name="Walk" type="Node" parent="FSMController/ExploreStateMachine"]
+script = ExtResource("4_p5xwo")
+
+[node name="Sprint" type="Node" parent="FSMController/ExploreStateMachine"]
+script = ExtResource("5_qyy84")
+
+[node name="Jump" type="Node" parent="FSMController/ExploreStateMachine"]
+script = ExtResource("6_ye2il")
+
+[node name="Fall" type="Node" parent="FSMController/ExploreStateMachine"]
+script = ExtResource("7_x105x")
+
+[node name="CombatStateMachine" type="Node" parent="FSMController"]
+script = ExtResource("8_oucn4")
+
+[node name="Combat" type="Node" parent="FSMController/CombatStateMachine"]
+script = ExtResource("9_hfqua")
+
+[node name="Attack" type="Node" parent="FSMController/CombatStateMachine"]
+script = ExtResource("10_oulwo")
+
+[node name="Parry" type="Node" parent="FSMController/CombatStateMachine"]
+script = ExtResource("11_1ttr0")
+
+[node name="Dodge" type="Node" parent="FSMController/CombatStateMachine"]
+script = ExtResource("12_30btr")
+
+[node name="Hit" type="Node" parent="FSMController/CombatStateMachine"]
+script = ExtResource("13_6y767")
+
+[node name="Recover" type="Node" parent="FSMController/CombatStateMachine"]
+script = ExtResource("14_8rlky")
+
 [node name="HoriPivot" type="Node3D" parent="."]
 
 [node name="VertPivot" type="Node3D" parent="HoriPivot"]
@@ -228,48 +273,6 @@ libraries = {
 }
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-
-[node name="ExploreStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "player")]
-script = ExtResource("2_t60be")
-initial_state = NodePath("Idle")
-player = NodePath("..")
-
-[node name="Idle" type="Node" parent="ExploreStateMachine"]
-script = ExtResource("3_lu513")
-
-[node name="Walk" type="Node" parent="ExploreStateMachine"]
-script = ExtResource("4_p5xwo")
-
-[node name="Sprint" type="Node" parent="ExploreStateMachine"]
-script = ExtResource("5_qyy84")
-
-[node name="Jump" type="Node" parent="ExploreStateMachine"]
-script = ExtResource("6_ye2il")
-
-[node name="Fall" type="Node" parent="ExploreStateMachine"]
-script = ExtResource("7_x105x")
-
-[node name="CombatStateMachine" type="Node" parent="." node_paths=PackedStringArray("player")]
-script = ExtResource("8_oucn4")
-player = NodePath("..")
-
-[node name="Combat" type="Node" parent="CombatStateMachine"]
-script = ExtResource("9_hfqua")
-
-[node name="Attack" type="Node" parent="CombatStateMachine"]
-script = ExtResource("10_oulwo")
-
-[node name="Parry" type="Node" parent="CombatStateMachine"]
-script = ExtResource("11_1ttr0")
-
-[node name="Dodge" type="Node" parent="CombatStateMachine"]
-script = ExtResource("12_30btr")
-
-[node name="Hit" type="Node" parent="CombatStateMachine"]
-script = ExtResource("13_6y767")
-
-[node name="Recover" type="Node" parent="CombatStateMachine"]
-script = ExtResource("14_8rlky")
 
 [connection signal="area_entered" from="HurtboxParent" to="." method="_on_hurtbox_parent_area_entered"]
 [connection signal="area_entered" from="ParryBoxParent" to="." method="_on_parry_box_parent_area_entered"]

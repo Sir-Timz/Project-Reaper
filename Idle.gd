@@ -13,3 +13,4 @@ func physics_update(delta):
 		fsm.change_state(self, "walk")
 	if Input.is_action_just_pressed("jump"):
 		fsm.change_state(self, "jump")
+	pass
