@@ -1,0 +1,275 @@
+[gd_scene load_steps=24 format=3 uid="uid://dj3rwx7pxbayn"]
+
+[ext_resource type="Script" path="res://Player.gd" id="1_5copa"]
+[ext_resource type="Script" path="res://ExploreStateMachine.gd" id="2_t60be"]
+[ext_resource type="Script" path="res://Idle.gd" id="3_lu513"]
+[ext_resource type="Script" path="res://Walk.gd" id="4_p5xwo"]
+[ext_resource type="Script" path="res://Sprint.gd" id="5_qyy84"]
+[ext_resource type="Script" path="res://Jump.gd" id="6_ye2il"]
+[ext_resource type="Script" path="res://Fall.gd" id="7_x105x"]
+[ext_resource type="Script" path="res://CombatStateMachine.gd" id="8_oucn4"]
+[ext_resource type="Script" path="res://CombatState.gd" id="9_hfqua"]
+[ext_resource type="Script" path="res://Attack.gd" id="10_oulwo"]
+[ext_resource type="Script" path="res://Parry.gd" id="11_1ttr0"]
+[ext_resource type="Script" path="res://Dodge.gd" id="12_30btr"]
+[ext_resource type="Script" path="res://Hit.gd" id="13_6y767"]
+[ext_resource type="Script" path="res://Recover.gd" id="14_8rlky"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_krtrv"]
+albedo_color = Color(1, 1, 1, 0)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_cgbvs"]
+material = SubResource("StandardMaterial3D_krtrv")
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_j8aqq"]
+points = PackedVector3Array(-0.125207, -0.532801, -0.480507, 0.0227831, 0.47607, 0.498884, 0.169713, 0.559144, 0.464172, 0.231051, -0.803591, 0.320455, 0.40741, 0.651043, -0.243523, -0.482789, 0.594843, 0.0822132, -0.362868, -0.682312, 0.289697, 0.469044, -0.654529, -0.0662713, -0.127444, 0.842701, -0.338103, -0.393435, -0.683942, -0.244717, 0.438255, 0.623309, 0.200849, 0.0841477, 0.977454, 0.114795, -0.0682023, -0.976458, -0.12927, 0.20055, -0.563129, -0.451454, -0.185527, 0.595453, -0.453475, -0.273363, 0.592268, 0.407754, -0.00693649, -0.476823, 0.49966, 0.375821, -0.588614, 0.316955, 0.111579, 0.563059, -0.481177, -0.41725, 0.527866, -0.270497, -0.484546, -0.596972, -0.0665097, -0.279747, 0.908561, 0.0533361, -0.250197, -0.880712, 0.205319, 0.263647, -0.902771, -0.127394, 0.293368, 0.871526, -0.157196, 0.373412, -0.526319, -0.328246, 0.499663, 0.476641, -0.00688856, 0.0531056, 0.875001, 0.324703, -0.154543, -0.590854, 0.465879, -0.0972799, -0.782358, -0.398188, -0.387649, -0.498171, 0.31565, -0.30068, -0.587995, -0.388901)
+
+[sub_resource type="Animation" id="Animation_0bi8s"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:mesh:material:albedo_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_s06q8"]
+resource_name = "dodge"
+length = 0.533336
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:mesh:material:albedo_color")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0166667, 0.350001, 0.533334),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0, 0.172549, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.0166667, 0.350001, 0.533334),
+"transitions": PackedFloat32Array(1, 1, 1),
+"values": [{
+"args": ["dodge"],
+"method": &"change_state"
+}, {
+"args": ["recover"],
+"method": &"change_state"
+}, {
+"args": ["combat"],
+"method": &"change_state"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_56nhs"]
+resource_name = "hit"
+length = 0.516668
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:mesh:material:albedo_color")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0166667, 0.516667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.166667),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": ["hit"],
+"method": &"change_state"
+}, {
+"args": ["combat"],
+"method": &"change_state"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_k47is"]
+resource_name = "parry"
+length = 0.566669
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:mesh:material:albedo_color")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.25, 0.566667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.215686, 0.215686, 0.215686, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.0333333, 0.25, 0.566667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"values": [{
+"args": ["parry"],
+"method": &"change_state"
+}, {
+"args": ["recover"],
+"method": &"change_state"
+}, {
+"args": ["combat"],
+"method": &"change_state"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_2p1ou"]
+resource_name = "parry_success"
+length = 0.133335
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:mesh:material:albedo_color")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.133333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 1, 0, 1), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.133333),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": ["combat"],
+"method": &"change_state"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2q0ar"]
+_data = {
+"RESET": SubResource("Animation_0bi8s"),
+"dodge": SubResource("Animation_s06q8"),
+"hit": SubResource("Animation_56nhs"),
+"parry": SubResource("Animation_k47is"),
+"parry_success": SubResource("Animation_2p1ou")
+}
+
+[node name="Player" type="CharacterBody3D"]
+collision_layer = 2
+script = ExtResource("1_5copa")
+rotation_speed = 20.0
+
+[node name="HoriPivot" type="Node3D" parent="."]
+
+[node name="VertPivot" type="Node3D" parent="HoriPivot"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="HoriPivot/VertPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_cgbvs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("ConvexPolygonShape3D_j8aqq")
+
+[node name="HurtboxParent" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="Hurtbox" type="CollisionShape3D" parent="HurtboxParent"]
+shape = SubResource("ConvexPolygonShape3D_j8aqq")
+
+[node name="ParryBoxParent" type="Area3D" parent="."]
+collision_layer = 8
+collision_mask = 4
+monitoring = false
+monitorable = false
+
+[node name="ParryBox" type="CollisionShape3D" parent="ParryBoxParent"]
+shape = SubResource("ConvexPolygonShape3D_j8aqq")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_2q0ar")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+
+[node name="ExploreStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "player")]
+script = ExtResource("2_t60be")
+initial_state = NodePath("Idle")
+player = NodePath("..")
+
+[node name="Idle" type="Node" parent="ExploreStateMachine"]
+script = ExtResource("3_lu513")
+
+[node name="Walk" type="Node" parent="ExploreStateMachine"]
+script = ExtResource("4_p5xwo")
+
+[node name="Sprint" type="Node" parent="ExploreStateMachine"]
+script = ExtResource("5_qyy84")
+
+[node name="Jump" type="Node" parent="ExploreStateMachine"]
+script = ExtResource("6_ye2il")
+
+[node name="Fall" type="Node" parent="ExploreStateMachine"]
+script = ExtResource("7_x105x")
+
+[node name="CombatStateMachine" type="Node" parent="." node_paths=PackedStringArray("player")]
+script = ExtResource("8_oucn4")
+player = NodePath("..")
+
+[node name="Combat" type="Node" parent="CombatStateMachine"]
+script = ExtResource("9_hfqua")
+
+[node name="Attack" type="Node" parent="CombatStateMachine"]
+script = ExtResource("10_oulwo")
+
+[node name="Parry" type="Node" parent="CombatStateMachine"]
+script = ExtResource("11_1ttr0")
+
+[node name="Dodge" type="Node" parent="CombatStateMachine"]
+script = ExtResource("12_30btr")
+
+[node name="Hit" type="Node" parent="CombatStateMachine"]
+script = ExtResource("13_6y767")
+
+[node name="Recover" type="Node" parent="CombatStateMachine"]
+script = ExtResource("14_8rlky")
+
+[connection signal="area_entered" from="HurtboxParent" to="." method="_on_hurtbox_parent_area_entered"]
+[connection signal="area_entered" from="ParryBoxParent" to="." method="_on_parry_box_parent_area_entered"]

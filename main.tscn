@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://p233vn60lwu"]
+
+[ext_resource type="PackedScene" uid="uid://dj3rwx7pxbayn" path="res://player.tscn" id="1_pv4vx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wy6uj"]
+size = Vector3(60, 2, 60)
+
+[sub_resource type="BoxMesh" id="BoxMesh_kmvup"]
+size = Vector3(60, 2, 60)
+
+[node name="Main" type="Node"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 0.999999, -0.00162315, 0, 0.00162315, 0.999999, 0.486176, -3.85607, 0.238966)
+shape = SubResource("BoxShape3D_wy6uj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.469464, -3.77299, 0.272949)
+mesh = SubResource("BoxMesh_kmvup")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.774895, 0.630405, 0.0461219, 0.0440423, -0.0189413, 0.99885, 0.630554, 0.776035, -0.013087, 5.40453, 12.8481, -1.05564)
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("1_pv4vx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)

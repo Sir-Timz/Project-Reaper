@@ -1,0 +1,174 @@
+[gd_scene load_steps=12 format=3 uid="uid://b3w8l2r3jem77"]
+
+[ext_resource type="Script" path="res://soldier.gd" id="1_lsg82"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_esek1"]
+albedo_color = Color(0.0705882, 0, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_06bmg"]
+material = SubResource("StandardMaterial3D_esek1")
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_jnmkm"]
+points = PackedVector3Array(-0.125207, -0.532801, -0.480507, 0.0227831, 0.47607, 0.498884, 0.169713, 0.559144, 0.464172, 0.231051, -0.803591, 0.320455, 0.40741, 0.651043, -0.243523, -0.482789, 0.594843, 0.0822132, -0.362868, -0.682312, 0.289697, 0.469044, -0.654529, -0.0662713, -0.127444, 0.842701, -0.338103, -0.393435, -0.683942, -0.244717, 0.438255, 0.623309, 0.200849, 0.0841477, 0.977454, 0.114795, -0.0682023, -0.976458, -0.12927, 0.20055, -0.563129, -0.451454, -0.185527, 0.595453, -0.453475, -0.273363, 0.592268, 0.407754, -0.00693649, -0.476823, 0.49966, 0.375821, -0.588614, 0.316955, 0.111579, 0.563059, -0.481177, -0.41725, 0.527866, -0.270497, -0.484546, -0.596972, -0.0665097, -0.279747, 0.908561, 0.0533361, -0.250197, -0.880712, 0.205319, 0.263647, -0.902771, -0.127394, 0.293368, 0.871526, -0.157196, 0.373412, -0.526319, -0.328246, 0.499663, 0.476641, -0.00688856, 0.0531056, 0.875001, 0.324703, -0.154543, -0.590854, 0.465879, -0.0972799, -0.782358, -0.398188, -0.387649, -0.498171, 0.31565, -0.30068, -0.587995, -0.388901)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_dfivu"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_16b8v"]
+points = PackedVector3Array(-0.214183, -0.948028, -0.451129, 0.0227317, 0.952146, 0.498887, 0.171488, 0.951995, 0.469018, -0.125934, 0.952684, -0.483291, 0.499663, -0.953674, -0.00688883, -0.387646, -0.93796, 0.315653, -0.483292, 0.952686, -0.12593, 0.375097, 0.940128, -0.329816, 0.171488, -0.951995, 0.469018, 0.140783, -0.945485, -0.479579, 0.469014, 0.952011, 0.171499, -0.387646, 0.93796, 0.315653, -0.483292, -0.952686, -0.12593, -0.183511, -0.943076, 0.464698, 0.407412, -0.946994, 0.288983, 0.375097, -0.940128, -0.329816, -0.395154, 0.955761, -0.305523, -0.479555, 0.945437, 0.14088, 0.464698, 0.943099, -0.183512, 0.140783, 0.945485, -0.479579, -0.243203, 0.945955, 0.436491, -0.479555, -0.945437, 0.14088, 0.288971, 0.946988, 0.407421, -0.395154, -0.955761, -0.305523, -0.0069906, -0.953641, 0.499658, 0.499663, 0.953674, -0.00688883, -0.271948, 0.943071, -0.419217, 0.464698, -0.943099, -0.183512, -0.125934, -0.952684, -0.483291, 0.315648, 0.937973, -0.387651, 0.469014, -0.952011, 0.171499, 0.407412, 0.946994, 0.288983)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_07jrc"]
+
+[sub_resource type="Animation" id="Animation_7uyss"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sword:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_hwudh"]
+resource_name = "attack"
+length = 0.833335
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sword:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.183333, 0.4, 0.566667, 0.833333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.778122, 0.134013, -0.725486), Vector3(-1.17207, 1.22388, -1.29613), Vector3(-1.17207, 3.00925, -1.29613), Vector3(0, 0, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.566667, 0.833333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"values": [{
+"args": ["attack"],
+"method": &"_change_state"
+}, {
+"args": ["active"],
+"method": &"_change_state"
+}, {
+"args": ["recover"],
+"method": &"_change_state"
+}, {
+"args": ["combat"],
+"method": &"_change_state"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_tos6m"]
+resource_name = "posture_break"
+length = 5.0
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sword:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.166667, 4.56667, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.1585, -0.580395, 0.531525), Vector3(-0.1585, -0.580395, 0.531525), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.166667, 4.56667, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.283633), Vector3(0, 0, 0.283633), Vector3(0, 0, 0)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": ["recover"],
+"method": &"_change_state"
+}, {
+"args": ["combat"],
+"method": &"_change_state"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nxwsy"]
+_data = {
+"RESET": SubResource("Animation_7uyss"),
+"attack": SubResource("Animation_hwudh"),
+"posture_break": SubResource("Animation_tos6m")
+}
+
+[node name="Soldier" type="CharacterBody3D"]
+script = ExtResource("1_lsg82")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_06bmg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("ConvexPolygonShape3D_jnmkm")
+
+[node name="Sword" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 0
+
+[node name="SwordMesh" type="MeshInstance3D" parent="Sword"]
+transform = Transform3D(-2.30372e-08, -0.0540615, -0.499269, 2.18237e-08, 0.998538, -0.0270307, 0.5, -4.60745e-08, -2.18237e-08, -0.735732, 0.777865, -0.0822948)
+mesh = SubResource("CylinderMesh_dfivu")
+skeleton = NodePath("../..")
+
+[node name="Sword Hitbox" type="CollisionShape3D" parent="Sword"]
+transform = Transform3D(0.597978, -0.0984306, 6.5568e-17, 0.0492153, 1.19596, -7.96667e-16, 0, 1.59872e-15, 0.6, -0.735732, 0.777865, -0.0822948)
+shape = SubResource("ConvexPolygonShape3D_16b8v")
+
+[node name="SwordCast" type="ShapeCast3D" parent="Sword"]
+transform = Transform3D(0.599386, -0.0542683, 0, 0.0271341, 1.19877, 0, 0, 0, 0.6, -0.685098, -0.20937, -0.0907742)
+shape = SubResource("CylinderShape3D_07jrc")
+target_position = Vector3(0, 1, 0)
+collision_mask = 8
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_nxwsy")
+}
