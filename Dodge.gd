@@ -1,11 +1,17 @@
 extends State
+var dodge_dir
+
+func enter(dir = null, initial_pos = null):
+	dodge_dir = dir
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func update(delta):
 	pass
+
+func physics_update(delta):
+	var initial_pos = player.position
+	if abs(player.position.z - initial_pos.z) < 1:
+		player.velocity.z = dodge_dir * player.dodge_speed * delta
+	else:
+		player.velocity.z = 0
+		fsm.change_state(self, "recover", null, initial_pos)

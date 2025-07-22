@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dj3rwx7pxbayn"]
+[gd_scene load_steps=43 format=3 uid="uid://dj3rwx7pxbayn"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_5copa"]
 [ext_resource type="Script" path="res://ExploreStateMachine.gd" id="2_t60be"]
@@ -56,26 +56,6 @@ tracks/0/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(0, 0.172549, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
 }
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.0166667, 0.350001, 0.533334),
-"transitions": PackedFloat32Array(1, 1, 1),
-"values": [{
-"args": ["dodge"],
-"method": &"change_state"
-}, {
-"args": ["recover"],
-"method": &"change_state"
-}, {
-"args": ["combat"],
-"method": &"change_state"
-}]
-}
 
 [sub_resource type="Animation" id="Animation_56nhs"]
 resource_name = "hit"
@@ -127,26 +107,6 @@ tracks/0/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(0.215686, 0.215686, 0.215686, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
 }
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.0333333, 0.25, 0.566667),
-"transitions": PackedFloat32Array(1, 1, 1),
-"values": [{
-"args": ["parry"],
-"method": &"change_state"
-}, {
-"args": ["recover"],
-"method": &"change_state"
-}, {
-"args": ["combat"],
-"method": &"change_state"
-}]
-}
 
 [sub_resource type="Animation" id="Animation_2p1ou"]
 resource_name = "parry_success"
@@ -179,23 +139,93 @@ tracks/1/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_8l8tg"]
+resource_name = "combat_idle"
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2q0ar"]
 _data = {
 "RESET": SubResource("Animation_0bi8s"),
+"combat_idle": SubResource("Animation_8l8tg"),
 "dodge": SubResource("Animation_s06q8"),
 "hit": SubResource("Animation_56nhs"),
 "parry": SubResource("Animation_k47is"),
 "parry_success": SubResource("Animation_2p1ou")
 }
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pfj0i"]
+animation = &"combat_idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_v518h"]
+animation = &"dodge"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rt20s"]
+animation = &"hit"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jhsl1"]
+animation = &"parry"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wfi2d"]
+animation = &"parry_success"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dbqfr"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mv4f8"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_a73fp"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_b1rb5"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q3llm"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pvddu"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ed482"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sc4e0"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_utuqp"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_356ym"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vdkag"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_nl072"]
+states/End/position = Vector2(1097, 230)
+states/Start/position = Vector2(114, 230)
+states/combat_idle/node = SubResource("AnimationNodeAnimation_pfj0i")
+states/combat_idle/position = Vector2(247, 230)
+states/dodge/node = SubResource("AnimationNodeAnimation_v518h")
+states/dodge/position = Vector2(760, 452)
+states/hit/node = SubResource("AnimationNodeAnimation_rt20s")
+states/hit/position = Vector2(857, 302)
+states/parry/node = SubResource("AnimationNodeAnimation_jhsl1")
+states/parry/position = Vector2(349, 62)
+states/parry_success/node = SubResource("AnimationNodeAnimation_wfi2d")
+states/parry_success/position = Vector2(833, 62)
+transitions = ["Start", "combat_idle", SubResource("AnimationNodeStateMachineTransition_dbqfr"), "combat_idle", "parry", SubResource("AnimationNodeStateMachineTransition_mv4f8"), "combat_idle", "dodge", SubResource("AnimationNodeStateMachineTransition_a73fp"), "combat_idle", "hit", SubResource("AnimationNodeStateMachineTransition_b1rb5"), "parry", "parry_success", SubResource("AnimationNodeStateMachineTransition_q3llm"), "parry", "hit", SubResource("AnimationNodeStateMachineTransition_pvddu"), "combat_idle", "parry_success", SubResource("AnimationNodeStateMachineTransition_ed482"), "hit", "combat_idle", SubResource("AnimationNodeStateMachineTransition_sc4e0"), "dodge", "combat_idle", SubResource("AnimationNodeStateMachineTransition_utuqp"), "dodge", "hit", SubResource("AnimationNodeStateMachineTransition_356ym"), "parry", "combat_idle", SubResource("AnimationNodeStateMachineTransition_vdkag")]
+
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
 script = ExtResource("1_5copa")
 rotation_speed = 20.0
 
-[node name="FSMController" type="Node" parent="." node_paths=PackedStringArray("initial_fsm")]
+[node name="FSMController" type="Node" parent="."]
 script = ExtResource("2_yor52")
-initial_fsm = NodePath("ExploreStateMachine")
 
 [node name="ExploreStateMachine" type="Node" parent="FSMController" node_paths=PackedStringArray("initial_state")]
 script = ExtResource("2_t60be")
@@ -272,7 +302,13 @@ libraries = {
 "": SubResource("AnimationLibrary_2q0ar")
 }
 
-[node name="AnimationTree" type="AnimationTree" parent="."]
+[node name="CombatAnimTree" type="AnimationTree" parent="."]
+active = false
+libraries = {
+"": SubResource("AnimationLibrary_2q0ar")
+}
+tree_root = SubResource("AnimationNodeStateMachine_nl072")
+anim_player = NodePath("../AnimationPlayer")
 
 [connection signal="area_entered" from="HurtboxParent" to="." method="_on_hurtbox_parent_area_entered"]
 [connection signal="area_entered" from="ParryBoxParent" to="." method="_on_parry_box_parent_area_entered"]

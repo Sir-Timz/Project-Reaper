@@ -9,6 +9,7 @@ var hori_input := 0.0
 var vert_input := 0.0
 var dodge_dir
 var initial_pos
+var new_scene : String
 
 
 @export var current_state = State.IDLE
@@ -30,6 +31,9 @@ var initial_pos
 @onready var explore_fsm = $ExploreStateMachine
 @onready var combat_fsm = $CombatStateMachine
 @onready var fsm_controller = $FSMController
+@onready var combat_anim_tree = $CombatAnimTree
+
+signal imready
 
 enum State {
 	IDLE,
@@ -48,6 +52,10 @@ enum State {
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	connect("imready", Callable(GameManager, "on_player_ready"))
+	emit_signal("imready")
+	
+	
 	
 	
 
@@ -89,7 +97,6 @@ func _physics_process(delta):
 		#velocity.y = 0
 
 	match current_state:
-			
 			State.COMBAT:
 				var move_dir = Input.get_axis("move_left", "move_right")
 				dodge_dir = Input.get_axis("move_forward", "move_back")
@@ -97,29 +104,19 @@ func _physics_process(delta):
 				if Input.is_action_just_pressed("parry"):
 					velocity.x = 0
 					anim_player.play("parry")
-				if Input.is_action_just_pressed("dodge"):
-					if dodge_dir:
-						initial_pos = position
-						anim_player.play("dodge")
 			State.ATTACK:
 				pass
 			State.PARRY:
 				velocity = Vector3.ZERO
-			State.DODGE:
-				if abs(position.z - initial_pos.z) < 1:
-					velocity.z = dodge_dir * dodge_speed * delta
-				else:
-					velocity.z = 0
 			State.HIT:
 				velocity = Vector3.ZERO
-			State.RECOVER:
-				velocity = Vector3.ZERO
-				if position.z != initial_pos.z:
-					velocity.z = -(dodge_dir * dodge_speed * delta)
+			#State.RECOVER:
+				#velocity = Vector3.ZERO
+				#if position.z != initial_pos.z:
+					#velocity.z = -(dodge_dir * dodge_speed * delta)
 	
 		
-	if Input.is_action_just_pressed("cancel"):
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	
 
 	move_and_slide()
 	if velocity.length() > 1.0:
@@ -201,3 +198,7 @@ func _on_hurtbox_parent_area_entered(area):
 func _on_parry_box_parent_area_entered(area):
 	anim_player.stop()
 	anim_player.play("parry_success")
+
+func start_fsm():
+	print("NEW SCENE FROM PLAYER " , new_scene)
+	fsm_controller.initialise(new_scene)

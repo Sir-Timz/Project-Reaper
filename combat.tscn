@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://bnt420c7gwkks"]
 
-[ext_resource type="Script" path="res://combat.gd" id="1_5e3p5"]
+[ext_resource type="Script" path="res://Combat.gd" id="1_5e3p5"]
 [ext_resource type="PackedScene" uid="uid://dj3rwx7pxbayn" path="res://player.tscn" id="1_iygck"]
 [ext_resource type="PackedScene" uid="uid://b3w8l2r3jem77" path="res://soldier.tscn" id="3_vynnu"]
 

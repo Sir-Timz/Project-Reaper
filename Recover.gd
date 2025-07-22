@@ -1,11 +1,15 @@
 extends State
+var dodge_dir
+var initial_pos
 
+func enter(dir = null, init = null):
+	dodge_dir = dir
+	initial_pos = init
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func update(delta):
 	pass
+
+func physics_update(delta):
+	player.velocity = Vector3.ZERO
+	if player.position.z != initial_pos.z:
+		player.velocity.z = -(dodge_dir * player.dodge_speed * delta)

@@ -24,7 +24,7 @@ func enter():
 func exit():
 	pass
 
-func change_state(old_state : State, new_state_name : String):
+func change_state(old_state : State, new_state_name : String, dodge_dir = null, initial_pos = null):
 	if old_state != current_state:
 		print("Trying to change from " + old_state.name + " but currently in " + current_state.name)
 		return
@@ -38,7 +38,7 @@ func change_state(old_state : State, new_state_name : String):
 	if current_state:
 		current_state.exit()
 	
-	new_state.enter()
+	new_state.enter(dodge_dir, initial_pos)
 	current_state = new_state
 	
 func update(delta):

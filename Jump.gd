@@ -1,7 +1,7 @@
 extends State
 
 
-func enter():
+func enter(dodge_dir = null, initial_pos = null):
 	#print(self)
 	if player == null:
 		print("couldnt find player")

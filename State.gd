@@ -5,7 +5,7 @@ var player : Node = null
 
 signal state_transition
 
-func enter():
+func enter(dodge_dir = null, initial_pos = null):
 	#print(self)
 	if player == null:
 		print("couldnt find player")
