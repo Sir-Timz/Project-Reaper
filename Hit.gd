@@ -1,11 +1,13 @@
 extends State
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+func enter(dodge_dir = null, initial_pos = null):
+	player.hit = true
+	player.velocity = Vector3.ZERO
+	
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func update(delta):
+	if player.combat_anim_tree.animation_finished:
+		fsm.change_state(self, "combat")
+func exit():
+	player.hit = false

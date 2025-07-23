@@ -65,29 +65,29 @@ func _change_state(state):
 			current_state = State.COMBAT
 			if posture <= 0:
 				posture = 100
-			print("combat")
+			#print("combat")
 			sword.monitoring = false
 			sword.monitorable = false
 			
 		"attack":
 			current_state = State.ATTACKING
-			print("attack")
+			#print("attack")
 		"active":
 			current_state = State.ACTIVE
 			sword_cast.enabled = true
 			sword.monitoring = true
 			sword.monitorable = true
 			await get_tree().create_timer(0.01).timeout
-			print("active")
+			#print("active")
 		"hit":
 			current_state = State.HIT
 			sword.monitoring = false
 			sword.monitorable = false
-			print("hit")
+			#print("hit")
 		"recover":
 			current_state = State.RECOVERY
 			sword.monitoring = false
 			sword.monitorable = false
-			print("recover")
+			#print("recover")
 
 

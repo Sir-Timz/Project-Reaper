@@ -10,6 +10,12 @@ var vert_input := 0.0
 var dodge_dir
 var initial_pos
 var new_scene : String
+var parry = false
+var parry_success = false
+var dodging = false
+var hit = false
+var playback
+var current_tree_node
 
 
 @export var current_state = State.IDLE
@@ -33,7 +39,8 @@ var new_scene : String
 @onready var fsm_controller = $FSMController
 @onready var combat_anim_tree = $CombatAnimTree
 
-signal imready
+signal playerimready
+signal hit_received
 
 enum State {
 	IDLE,
@@ -52,12 +59,10 @@ enum State {
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	connect("imready", Callable(GameManager, "on_player_ready"))
-	emit_signal("imready")
-	
-	
-	
-	
+	connect("playerimready", Callable(GameManager, "on_player_ready"))
+	emit_signal("playerimready", self)
+
+
 
 func _disable_camera():
 	camera.current = false
@@ -68,6 +73,13 @@ func _process(delta):
 	vert_pivot.rotation.x = clamp(vert_pivot.rotation.x, -0.5, 0.1)
 	hori_input = 0
 	vert_input = 0
+
+	if playback:
+		current_tree_node = playback.get_current_node()
+		#print(current_tree_node)
+		
+	
+
 	
 	match current_state:
 		State.IDLE:
@@ -97,17 +109,17 @@ func _physics_process(delta):
 		#velocity.y = 0
 
 	match current_state:
-			State.COMBAT:
-				var move_dir = Input.get_axis("move_left", "move_right")
-				dodge_dir = Input.get_axis("move_forward", "move_back")
-				velocity.x = move_dir * speed
-				if Input.is_action_just_pressed("parry"):
-					velocity.x = 0
-					anim_player.play("parry")
+			#State.COMBAT:
+				#var move_dir = Input.get_axis("move_left", "move_right")
+				#dodge_dir = Input.get_axis("move_forward", "move_back")
+				#velocity.x = move_dir * speed
+				#if Input.is_action_just_pressed("parry"):
+					#velocity.x = 0
+					#anim_player.play("parry")
 			State.ATTACK:
 				pass
-			State.PARRY:
-				velocity = Vector3.ZERO
+			#State.PARRY:
+				#velocity = Vector3.ZERO
 			State.HIT:
 				velocity = Vector3.ZERO
 			#State.RECOVER:
@@ -193,12 +205,22 @@ func change_state(state):
 		
 
 func _on_hurtbox_parent_area_entered(area):
-	anim_player.play("hit")
+	#anim_player.play("hit")
+	pass
 	
 func _on_parry_box_parent_area_entered(area):
-	anim_player.stop()
-	anim_player.play("parry_success")
+	#anim_player.stop()
+	#anim_player.play("parry_success")
+	pass
 
-func start_fsm():
-	print("NEW SCENE FROM PLAYER " , new_scene)
-	fsm_controller.initialise(new_scene)
+func start_fsm(fsm):
+	print("NEW SCENE FROM PLAYER " , fsm)
+	fsm_controller.initialise(fsm)
+
+func change_fsm(fsm):
+	fsm_controller.change_fsm()
+
+func on_tree_ready(node):
+	combat_anim_tree = node
+	playback = combat_anim_tree.get("parameters/playback") as AnimationNodeStateMachinePlayback
+	print("PLAYBACK SET")

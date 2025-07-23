@@ -11,6 +11,7 @@ signal fsm_transition
 
 
 func enter():
+	print("NEW STATEMACHINE ", self)
 	for child in get_children():
 		if child is State:
 			child.fsm = self
@@ -43,8 +44,15 @@ func change_state(old_state : State, new_state_name : String, dodge_dir = null, 
 	
 func update(delta):
 	if current_state:
+		#print(current_state)
 		current_state.update(delta)
 		
 func physics_update(delta):
 	if current_state:
 		current_state.physics_update(delta)
+
+func force_switch(state : String, dodge_dir = null, initial_pos = null):
+	var new_state = states.get(state.to_lower())
+	if current_state:
+		current_state.exit()
+	new_state.enter(dodge_dir, initial_pos)

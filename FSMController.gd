@@ -9,7 +9,7 @@ var current_fsm : FiniteStateMachine
 
 
 func initialise(scene):
-
+	player.connect("hit_received", Callable(self, "player_hit"))
 	print(player)
 	for child in get_children():
 		if child is FiniteStateMachine:
@@ -29,6 +29,7 @@ func initialise(scene):
 
 func _process(delta):
 	if current_fsm:
+		on_tree_ready(null)
 		current_fsm.update(delta)
 
 func _physics_process(delta):
@@ -36,4 +37,23 @@ func _physics_process(delta):
 		current_fsm.physics_update(delta)
 
 func change_fsm():
-	pass
+	if current_fsm:
+		if current_fsm == machines["combatstatemachine"]:
+			current_fsm.exit()
+			current_fsm = machines["explorestatemachine"]
+		elif current_fsm == machines["explorestatemachine"]:
+			current_fsm.exit()
+			current_fsm = machines["combatstatemachine"]
+		
+
+func player_hit():
+	print("player hit")
+	#if current_fsm == machines["combatstatemachine"]:
+		#current_fsm.force_switch("hit")
+
+func on_tree_ready(node):
+	if current_fsm:
+		if current_fsm == machines["combatstatemachine"]:
+			player.combat_anim_tree.active = true
+		elif current_fsm == machines["explorestatemachine"]:
+			player.combat_anim_tree.active = false

@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://dj3rwx7pxbayn"]
+[gd_scene load_steps=44 format=3 uid="uid://dj3rwx7pxbayn"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_5copa"]
 [ext_resource type="Script" path="res://ExploreStateMachine.gd" id="2_t60be"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" path="res://Dodge.gd" id="12_30btr"]
 [ext_resource type="Script" path="res://Hit.gd" id="13_6y767"]
 [ext_resource type="Script" path="res://Recover.gd" id="14_8rlky"]
+[ext_resource type="Script" path="res://CombatAnimTree.gd" id="16_7e3rp"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_krtrv"]
 albedo_color = Color(1, 1, 1, 0)
@@ -40,6 +41,9 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_8l8tg"]
+resource_name = "combat_idle"
+
 [sub_resource type="Animation" id="Animation_s06q8"]
 resource_name = "dodge"
 length = 0.533336
@@ -51,10 +55,10 @@ tracks/0/path = NodePath("MeshInstance3D:mesh:material:albedo_color")
 tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0166667, 0.350001, 0.533334),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 1), Color(0, 0.172549, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
+"values": [Color(0, 0.172549, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_56nhs"]
@@ -73,27 +77,10 @@ tracks/0/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
 }
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.166667),
-"transitions": PackedFloat32Array(1, 1),
-"values": [{
-"args": ["hit"],
-"method": &"change_state"
-}, {
-"args": ["combat"],
-"method": &"change_state"
-}]
-}
 
 [sub_resource type="Animation" id="Animation_k47is"]
 resource_name = "parry"
-length = 0.566669
+length = 0.250002
 step = 0.0166667
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -102,10 +89,10 @@ tracks/0/path = NodePath("MeshInstance3D:mesh:material:albedo_color")
 tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0333333, 0.25, 0.566667),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.0333333, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 1), Color(0.215686, 0.215686, 0.215686, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
+"values": [Color(1, 1, 1, 1), Color(0.215686, 0.215686, 0.215686, 1), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_2p1ou"]
@@ -124,23 +111,6 @@ tracks/0/keys = {
 "update": 0,
 "values": [Color(0, 1, 0, 1), Color(1, 1, 1, 1)]
 }
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.133333),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": ["combat"],
-"method": &"change_state"
-}]
-}
-
-[sub_resource type="Animation" id="Animation_8l8tg"]
-resource_name = "combat_idle"
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2q0ar"]
 _data = {
@@ -172,21 +142,21 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mv4f8"]
 advance_mode = 2
+advance_condition = &"parry"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_a73fp"]
 advance_mode = 2
+advance_condition = &"dodge"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_b1rb5"]
 advance_mode = 2
+advance_condition = &"hit"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q3llm"]
 advance_mode = 2
+advance_condition = &"parry_success"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pvddu"]
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ed482"]
-switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sc4e0"]
@@ -199,8 +169,13 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_356ym"]
 advance_mode = 2
+advance_condition = &"hit"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vdkag"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dbxj8"]
 switch_mode = 2
 advance_mode = 2
 
@@ -208,16 +183,16 @@ advance_mode = 2
 states/End/position = Vector2(1097, 230)
 states/Start/position = Vector2(114, 230)
 states/combat_idle/node = SubResource("AnimationNodeAnimation_pfj0i")
-states/combat_idle/position = Vector2(247, 230)
+states/combat_idle/position = Vector2(246, 230)
 states/dodge/node = SubResource("AnimationNodeAnimation_v518h")
 states/dodge/position = Vector2(760, 452)
 states/hit/node = SubResource("AnimationNodeAnimation_rt20s")
-states/hit/position = Vector2(857, 302)
+states/hit/position = Vector2(924, 221)
 states/parry/node = SubResource("AnimationNodeAnimation_jhsl1")
 states/parry/position = Vector2(349, 62)
 states/parry_success/node = SubResource("AnimationNodeAnimation_wfi2d")
 states/parry_success/position = Vector2(833, 62)
-transitions = ["Start", "combat_idle", SubResource("AnimationNodeStateMachineTransition_dbqfr"), "combat_idle", "parry", SubResource("AnimationNodeStateMachineTransition_mv4f8"), "combat_idle", "dodge", SubResource("AnimationNodeStateMachineTransition_a73fp"), "combat_idle", "hit", SubResource("AnimationNodeStateMachineTransition_b1rb5"), "parry", "parry_success", SubResource("AnimationNodeStateMachineTransition_q3llm"), "parry", "hit", SubResource("AnimationNodeStateMachineTransition_pvddu"), "combat_idle", "parry_success", SubResource("AnimationNodeStateMachineTransition_ed482"), "hit", "combat_idle", SubResource("AnimationNodeStateMachineTransition_sc4e0"), "dodge", "combat_idle", SubResource("AnimationNodeStateMachineTransition_utuqp"), "dodge", "hit", SubResource("AnimationNodeStateMachineTransition_356ym"), "parry", "combat_idle", SubResource("AnimationNodeStateMachineTransition_vdkag")]
+transitions = ["Start", "combat_idle", SubResource("AnimationNodeStateMachineTransition_dbqfr"), "combat_idle", "parry", SubResource("AnimationNodeStateMachineTransition_mv4f8"), "combat_idle", "dodge", SubResource("AnimationNodeStateMachineTransition_a73fp"), "combat_idle", "hit", SubResource("AnimationNodeStateMachineTransition_b1rb5"), "parry", "parry_success", SubResource("AnimationNodeStateMachineTransition_q3llm"), "parry", "hit", SubResource("AnimationNodeStateMachineTransition_pvddu"), "hit", "combat_idle", SubResource("AnimationNodeStateMachineTransition_sc4e0"), "dodge", "combat_idle", SubResource("AnimationNodeStateMachineTransition_utuqp"), "dodge", "hit", SubResource("AnimationNodeStateMachineTransition_356ym"), "parry", "combat_idle", SubResource("AnimationNodeStateMachineTransition_vdkag"), "parry_success", "combat_idle", SubResource("AnimationNodeStateMachineTransition_dbxj8")]
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
@@ -246,8 +221,9 @@ script = ExtResource("6_ye2il")
 [node name="Fall" type="Node" parent="FSMController/ExploreStateMachine"]
 script = ExtResource("7_x105x")
 
-[node name="CombatStateMachine" type="Node" parent="FSMController"]
+[node name="CombatStateMachine" type="Node" parent="FSMController" node_paths=PackedStringArray("initial_state")]
 script = ExtResource("8_oucn4")
+initial_state = NodePath("Combat")
 
 [node name="Combat" type="Node" parent="FSMController/CombatStateMachine"]
 script = ExtResource("9_hfqua")
@@ -309,6 +285,11 @@ libraries = {
 }
 tree_root = SubResource("AnimationNodeStateMachine_nl072")
 anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/dodge = false
+parameters/conditions/hit = false
+parameters/conditions/parry = false
+parameters/conditions/parry_success = false
+script = ExtResource("16_7e3rp")
 
 [connection signal="area_entered" from="HurtboxParent" to="." method="_on_hurtbox_parent_area_entered"]
 [connection signal="area_entered" from="ParryBoxParent" to="." method="_on_parry_box_parent_area_entered"]

@@ -27,7 +27,7 @@ grow_vertical = 2
 [node name="ElementContainer" type="VBoxContainer" parent="PauseMenu/PauseMargin"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PauseMenu/PauseMargin/ElementContainer"]
+[node name="MenuLabel" type="Label" parent="PauseMenu/PauseMargin/ElementContainer"]
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_fonts/font = SubResource("SystemFont_vr74s")
@@ -49,3 +49,5 @@ text = "Combat"
 layout_mode = 2
 size_flags_vertical = 3
 text = "N/A"
+
+[connection signal="pressed" from="PauseMenu/PauseMargin/ElementContainer/ButtonContainer/CombatButton" to="." method="_on_combat_button_pressed"]

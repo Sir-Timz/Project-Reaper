@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://bnt420c7gwkks"]
+[gd_scene load_steps=7 format=3 uid="uid://bnt420c7gwkks"]
 
 [ext_resource type="Script" path="res://Combat.gd" id="1_5e3p5"]
 [ext_resource type="PackedScene" uid="uid://dj3rwx7pxbayn" path="res://player.tscn" id="1_iygck"]
 [ext_resource type="PackedScene" uid="uid://b3w8l2r3jem77" path="res://soldier.tscn" id="3_vynnu"]
+[ext_resource type="PackedScene" uid="uid://vpi8nc84fd2p" path="res://ui.tscn" id="4_25hkw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wy6uj"]
 size = Vector3(60, 2, 60)
@@ -36,3 +37,5 @@ current = true
 
 [node name="Soldier" parent="." instance=ExtResource("3_vynnu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.192, -1.9, 0)
+
+[node name="UI" parent="." instance=ExtResource("4_25hkw")]
