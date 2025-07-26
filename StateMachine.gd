@@ -6,6 +6,7 @@ var states : Dictionary = {}
 var current_state : State
 var player : Node
 var controller : FiniteStateMachine
+var hit_reset_pos
 
 signal fsm_transition
 
@@ -26,6 +27,8 @@ func exit():
 	pass
 
 func change_state(old_state : State, new_state_name : String, dodge_dir = null, initial_pos = null):
+	if initial_pos:
+		hit_reset_pos = initial_pos
 	if old_state != current_state:
 		print("Trying to change from " + old_state.name + " but currently in " + current_state.name)
 		return
@@ -55,4 +58,5 @@ func force_switch(state : String, dodge_dir = null, initial_pos = null):
 	var new_state = states.get(state.to_lower())
 	if current_state:
 		current_state.exit()
-	new_state.enter(dodge_dir, initial_pos)
+	current_state = new_state
+	new_state.enter(dodge_dir, hit_reset_pos)

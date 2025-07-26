@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://dj3rwx7pxbayn"]
+[gd_scene load_steps=43 format=3 uid="uid://dj3rwx7pxbayn"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_5copa"]
 [ext_resource type="Script" path="res://ExploreStateMachine.gd" id="2_t60be"]
@@ -14,7 +14,6 @@
 [ext_resource type="Script" path="res://Parry.gd" id="11_1ttr0"]
 [ext_resource type="Script" path="res://Dodge.gd" id="12_30btr"]
 [ext_resource type="Script" path="res://Hit.gd" id="13_6y767"]
-[ext_resource type="Script" path="res://Recover.gd" id="14_8rlky"]
 [ext_resource type="Script" path="res://CombatAnimTree.gd" id="16_7e3rp"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_krtrv"]
@@ -46,7 +45,7 @@ resource_name = "combat_idle"
 
 [sub_resource type="Animation" id="Animation_s06q8"]
 resource_name = "dodge"
-length = 0.533336
+length = 0.500002
 step = 0.0166667
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -55,15 +54,15 @@ tracks/0/path = NodePath("MeshInstance3D:mesh:material:albedo_color")
 tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.283333, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Color(0, 0.172549, 1, 1)]
+"values": [Color(0, 0.172549, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 0, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_56nhs"]
 resource_name = "hit"
-length = 0.516668
+length = 0.400002
 step = 0.0166667
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -72,15 +71,32 @@ tracks/0/path = NodePath("MeshInstance3D:mesh:material:albedo_color")
 tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0166667, 0.516667),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.400001),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
+"values": [Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.400001),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": ["hit"],
+"method": &"disable_box"
+}, {
+"args": ["hit"],
+"method": &"enable_box"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_k47is"]
 resource_name = "parry"
-length = 0.250002
+length = 0.500003
 step = 0.0166667
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -89,10 +105,41 @@ tracks/0/path = NodePath("MeshInstance3D:mesh:material:albedo_color")
 tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0333333, 0.25),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 1), Color(0.215686, 0.215686, 0.215686, 1), Color(1, 1, 1, 1)]
+"values": [Color(0.215686, 0.215686, 0.215686, 1), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": ["parry"],
+"method": &"enable_box"
+}, {
+"args": ["parry"],
+"method": &"disable_box"
+}]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": ["hit"],
+"method": &"disable_box"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_2p1ou"]
@@ -110,6 +157,20 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(0, 1, 0, 1), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": ["parry"],
+"method": &"disable_box"
+}]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2q0ar"]
@@ -240,9 +301,6 @@ script = ExtResource("12_30btr")
 [node name="Hit" type="Node" parent="FSMController/CombatStateMachine"]
 script = ExtResource("13_6y767")
 
-[node name="Recover" type="Node" parent="FSMController/CombatStateMachine"]
-script = ExtResource("14_8rlky")
-
 [node name="HoriPivot" type="Node3D" parent="."]
 
 [node name="VertPivot" type="Node3D" parent="HoriPivot"]
@@ -265,10 +323,8 @@ collision_mask = 4
 shape = SubResource("ConvexPolygonShape3D_j8aqq")
 
 [node name="ParryBoxParent" type="Area3D" parent="."]
-collision_layer = 8
-collision_mask = 4
-monitoring = false
-monitorable = false
+collision_layer = 0
+collision_mask = 0
 
 [node name="ParryBox" type="CollisionShape3D" parent="ParryBoxParent"]
 shape = SubResource("ConvexPolygonShape3D_j8aqq")

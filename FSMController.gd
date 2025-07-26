@@ -46,10 +46,16 @@ func change_fsm():
 			current_fsm = machines["combatstatemachine"]
 		
 
-func player_hit():
+func force_switch(state):
 	print("player hit")
-	#if current_fsm == machines["combatstatemachine"]:
-		#current_fsm.force_switch("hit")
+	match state:
+		"hit":
+			if current_fsm == machines["combatstatemachine"]:
+				current_fsm.force_switch("hit")
+		"combat":
+			if current_fsm == machines["combatstatemachine"]:
+				current_fsm.force_switch("combat")
+	
 
 func on_tree_ready(node):
 	if current_fsm:

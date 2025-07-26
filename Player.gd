@@ -31,7 +31,8 @@ var current_tree_node
 @onready var model = $MeshInstance3D
 @onready var anim_player = $AnimationPlayer
 @onready var camera = $HoriPivot/VertPivot/Camera3D
-@onready var hurtbox = $HurtboxParent
+@onready var hurtbox_parent = $HurtboxParent
+@onready var hurtbox = $HurtboxParent/Hurtbox
 @onready var parry_box_parent = $ParryBoxParent
 @onready var parry_box = $ParryBoxParent/ParryBox
 @onready var explore_fsm = $ExploreStateMachine
@@ -105,31 +106,6 @@ func _process(delta):
 
 
 func _physics_process(delta):
-	#if is_on_floor():
-		#velocity.y = 0
-
-	match current_state:
-			#State.COMBAT:
-				#var move_dir = Input.get_axis("move_left", "move_right")
-				#dodge_dir = Input.get_axis("move_forward", "move_back")
-				#velocity.x = move_dir * speed
-				#if Input.is_action_just_pressed("parry"):
-					#velocity.x = 0
-					#anim_player.play("parry")
-			State.ATTACK:
-				pass
-			#State.PARRY:
-				#velocity = Vector3.ZERO
-			State.HIT:
-				velocity = Vector3.ZERO
-			#State.RECOVER:
-				#velocity = Vector3.ZERO
-				#if position.z != initial_pos.z:
-					#velocity.z = -(dodge_dir * dodge_speed * delta)
-	
-		
-	
-
 	move_and_slide()
 	if velocity.length() > 1.0:
 		model.rotation.y - lerp_angle(model.rotation.y, hori_pivot.rotation.y, rotation_speed * delta)
@@ -157,7 +133,6 @@ func change_state(state):
 			velocity.z = 0
 			if initial_pos and position != initial_pos:
 				position = initial_pos
-			hurtbox.monitoring = true
 			camera.current = false
 			parry_box_parent.monitoring = false
 			parry_box_parent.monitorable = false
@@ -205,13 +180,12 @@ func change_state(state):
 		
 
 func _on_hurtbox_parent_area_entered(area):
-	#anim_player.play("hit")
-	pass
+	fsm_controller.force_switch("hit")
+	print("hit")
 	
 func _on_parry_box_parent_area_entered(area):
-	#anim_player.stop()
-	#anim_player.play("parry_success")
-	pass
+	parry_success = true
+	fsm_controller.force_switch("combat")
 
 func start_fsm(fsm):
 	print("NEW SCENE FROM PLAYER " , fsm)
@@ -224,3 +198,20 @@ func on_tree_ready(node):
 	combat_anim_tree = node
 	playback = combat_anim_tree.get("parameters/playback") as AnimationNodeStateMachinePlayback
 	print("PLAYBACK SET")
+
+func disable_box(box):
+	match box:
+		"hurt":
+			hurtbox_parent.collision_mask = 0
+			print("HURTBOX DISABLED")
+		"parry":
+			parry_box_parent.collision_layer = 0
+			parry_box_parent.collision_mask = 0
+
+func enable_box(box):
+	match box:
+		"hurt":
+			hurtbox_parent.collision_mask = 3
+		"parry":
+			parry_box_parent.collision_layer = 4
+			parry_box_parent.collision_mask = 3
