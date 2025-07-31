@@ -2,9 +2,9 @@ extends State
 
 func enter(dodge_dir = null, initial_pos = null):
 	player.parry = false
-	player.parry_success = false
 	player.dodging = false
 	player.hit = false
+	player.disable_box("parry")
 
 func update(delta):
 	pass
@@ -18,4 +18,4 @@ func physics_update(delta):
 		fsm.change_state(self, "parry")
 	if Input.is_action_just_pressed("dodge"):
 		if dodge_dir:
-			fsm.change_state(self, "dodge", dodge_dir)
+			fsm.change_state(self, "dodge", dodge_dir, player.position)

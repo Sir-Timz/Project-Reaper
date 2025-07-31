@@ -25,6 +25,11 @@ func param():
 		set("parameters/conditions/parry_success", true)
 	else:
 		set("parameters/conditions/parry_success", false)
+	if player.parry_over:
+		pass
+		set("parameters/conditions/parry_over", true)
+	else:
+		set("parameters/conditions/parry_over", false)
 	if player.dodging:
 		set("parameters/conditions/dodge", true)
 	else:

@@ -13,6 +13,7 @@ const JUMP_VELOCITY = 4.5
 @export var posture = 100
 
 var posture_refill = false
+var posture_hit = false
 
 enum State {
 	COMBAT,
@@ -29,20 +30,14 @@ func _ready():
 	pass
 	
 func _process(delta):
-	match current_state:
-		State.COMBAT:
-			if not anim_player.is_playing():
-				anim_player.play("attack")
-		State.ACTIVE:
-			if sword_cast.is_colliding():
-				posture -= 10
-				print(posture)
-				if posture <= 0:
-					print("POSTURE BROKE")
-					anim_player.play("posture_break")
-				sword_cast.enabled = false
-		State.RECOVERY:
-			pass
+		match current_state:
+			State.COMBAT:
+				if not anim_player.is_playing():
+					anim_player.play("attack")
+			State.ACTIVE:
+				pass
+			State.RECOVERY:
+				pass
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -53,11 +48,33 @@ func _physics_process(delta):
 		State.COMBAT:
 			pass
 		State.ACTIVE:
-			pass
+			var collider
+			await reset_shape_cast()
+			if check_sword_collision() and !posture_hit:
+				posture_hit = true
+				posture -= 10
+				print(posture)
+				if posture <= 0:
+					print("POSTURE BROKE")
+					anim_player.play("posture_break")
 		State.RECOVERY:
-			pass
+			sword_cast.enabled = false
+			posture_hit = false
 	
+
+func reset_shape_cast():
+	sword_cast.enabled = false
+	await get_tree().physics_frame
+	sword_cast.enabled = true
+	sword_cast.force_shapecast_update()
 	
+func parried():
+	pass
+
+func check_sword_collision():
+		if sword_cast.is_colliding():
+			return true
+		return false
 
 func _change_state(state):
 	match state:

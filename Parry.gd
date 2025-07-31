@@ -1,6 +1,5 @@
 extends State
 var anim_timer
-var active_timer
 var recover
 
 
@@ -29,4 +28,4 @@ func exit():
 
 func on_anim_timeout():
 	print("PARRY ANIM FINISHED")
-	fsm.change_state(self, "combat")
+	fsm.change_state(self, "combat", null, player.position)

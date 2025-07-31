@@ -47,9 +47,9 @@ func change_fsm():
 		
 
 func force_switch(state):
-	print("player hit")
 	match state:
 		"hit":
+			print("player hit")
 			if current_fsm == machines["combatstatemachine"]:
 				current_fsm.force_switch("hit")
 		"combat":

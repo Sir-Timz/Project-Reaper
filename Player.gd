@@ -14,8 +14,10 @@ var parry = false
 var parry_success = false
 var dodging = false
 var hit = false
+var parry_on = false
 var playback
 var current_tree_node
+var parry_over = true
 
 
 @export var current_state = State.IDLE
@@ -74,6 +76,12 @@ func _process(delta):
 	vert_pivot.rotation.x = clamp(vert_pivot.rotation.x, -0.5, 0.1)
 	hori_input = 0
 	vert_input = 0
+	#print(playback.get_current_node())
+	
+	#print("parry box monitorable: ", parry_box_parent.monitorable)
+	#print("parry box monitoring: ", parry_box_parent.monitoring)
+	#print("parry box enabled: ", !parry_box.disabled)
+	
 
 	if playback:
 		current_tree_node = playback.get_current_node()
@@ -81,28 +89,6 @@ func _process(delta):
 		
 	
 
-	
-	match current_state:
-		State.IDLE:
-			pass
-		State.WALK:
-			pass
-		State.SPRINT:
-			pass
-		State.JUMP:
-			pass
-		State.FALL:
-			pass
-		State.ATTACK:
-			pass
-		State.PARRY:
-			pass
-		State.DODGE:
-			pass
-		State.HIT:
-			pass
-		State.RECOVER:
-			pass
 
 
 func _physics_process(delta):
@@ -117,74 +103,18 @@ func _unhandled_input(event: InputEvent):
 			vert_input = - event.relative.y * mouse_sensitivity
 	
 
-func change_state(state):
-	match state:
-		"idle":
-			current_state = State.IDLE
-			#print("idle")
-		"walk":
-			current_state = State.WALK
-			#print("walking")
-		"sprint":
-			current_state = State.SPRINT
-			#print("sprinting")
-		"combat":
-			current_state = State.COMBAT
-			velocity.z = 0
-			if initial_pos and position != initial_pos:
-				position = initial_pos
-			camera.current = false
-			parry_box_parent.monitoring = false
-			parry_box_parent.monitorable = false
-			parry_box.disabled = true
-			#print("combat")
-		"jump":
-			current_state = State.JUMP
-			#print("jumping")
-		"fall":
-			current_state = State.FALL
-			#print("falling")
-		"attack":
-			current_state = State.ATTACK
-			parry_box_parent.monitoring = false
-			parry_box_parent.monitorable = false
-			parry_box.disabled = true
-			#print("attacking")
-		"parry":
-			current_state = State.PARRY
-			hurtbox.monitoring = false
-			parry_box_parent.monitoring = true
-			parry_box_parent.monitorable = true
-			parry_box.disabled = false
-			#print("parrying")
-		"dodge":
-			current_state = State.DODGE
-			#print("dodging")
-		"hit":
-			if initial_pos:
-				position = initial_pos
-			current_state = State.HIT
-			health -= 10
-			parry_box_parent.monitoring = false
-			parry_box_parent.monitorable = false
-			parry_box.disabled = true
-			#print("hit")
-		"recover":
-			current_state = State.RECOVER
-			hurtbox.monitoring = true
-			parry_box_parent.monitoring = false
-			parry_box_parent.monitorable = false
-			parry_box.disabled = true
-			print(position.y)
-			#print("recovering")
-		
+
 
 func _on_hurtbox_parent_area_entered(area):
 	fsm_controller.force_switch("hit")
 	print("hit")
 	
 func _on_parry_box_parent_area_entered(area):
+	parry_over = false
 	parry_success = true
+	combat_anim_tree.set("parameters/StateMachine/current", "parry_success")
+	disable_box("parry")
+	#print("GET PARRIED, CASUAL")
 	fsm_controller.force_switch("combat")
 
 func start_fsm(fsm):
@@ -202,16 +132,31 @@ func on_tree_ready(node):
 func disable_box(box):
 	match box:
 		"hurt":
-			hurtbox_parent.collision_mask = 0
-			print("HURTBOX DISABLED")
+			hurtbox_parent.monitoring = false
 		"parry":
-			parry_box_parent.collision_layer = 0
-			parry_box_parent.collision_mask = 0
+			add_child(parry_box_parent)
+			remove_child(parry_box_parent)
+			#print("disabling parry box")
+			#print("parry box monitorable: ", parry_box_parent.monitorable)
+			#print("parry box monitoring: ", parry_box_parent.monitoring)
+			#print("parry box enabled: ", !parry_box.disabled)
 
 func enable_box(box):
 	match box:
 		"hurt":
-			hurtbox_parent.collision_mask = 3
+			hurtbox_parent.monitoring = true
 		"parry":
-			parry_box_parent.collision_layer = 4
-			parry_box_parent.collision_mask = 3
+			remove_child(parry_box_parent)
+			add_child(parry_box_parent)
+			parry_box_parent.monitoring = true
+			parry_box_parent.monitorable = true
+			parry_box.disabled = false
+			#parry_on = true
+			#print("parry box monitorable: ", parry_box_parent.monitorable)
+			#print("parry box monitoring: ", parry_box_parent.monitoring)
+			#print("parry box enabled: ", !parry_box.disabled)
+			
+func disable_parry_success():
+	parry_success = false
+	parry_over = true
+	print("parry success ", parry_success)
