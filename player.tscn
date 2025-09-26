@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://dj3rwx7pxbayn"]
+[gd_scene load_steps=46 format=3 uid="uid://dj3rwx7pxbayn"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_5copa"]
 [ext_resource type="Script" path="res://ExploreStateMachine.gd" id="2_t60be"]
@@ -15,6 +15,10 @@
 [ext_resource type="Script" path="res://Dodge.gd" id="12_30btr"]
 [ext_resource type="Script" path="res://Hit.gd" id="13_6y767"]
 [ext_resource type="Script" path="res://CombatAnimTree.gd" id="16_7e3rp"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_isq8y"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_txj6h"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_krtrv"]
 albedo_color = Color(1, 1, 1, 0)
@@ -38,6 +42,30 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sword:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.954338, -0.00775558, 0.142159)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sword:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.555975, 4.27875e-09, -0.360323)]
 }
 
 [sub_resource type="Animation" id="Animation_8l8tg"]
@@ -222,9 +250,55 @@ tracks/2/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_1ctg1"]
+resource_name = "attack1"
+step = 0.0166667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sword:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.2, 0.266667, 0.316667, 0.35),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.885439, -0.00775558, 0.142159), Vector3(0.787565, -0.00775558, 0.469712), Vector3(0.837894, -0.00775558, 0.139786), Vector3(0.782826, -0.00775558, 0.139786), Vector3(0.782826, -0.00775558, 0.139786), Vector3(0.671937, -0.00775558, 0.139786)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sword:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.2, 0.266667, 0.316667, 0.35),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.555975, -0.642595, -0.360323), Vector3(0.815427, 0.598744, -0.710465), Vector3(1.18925, 2.17112, 0.148125), Vector3(1.27838, 2.5668, 0.453498), Vector3(1.34216, 4.13294, 1.55334)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.516667, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &""
+}, {
+"args": [],
+"method": &""
+}]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2q0ar"]
 _data = {
 "RESET": SubResource("Animation_0bi8s"),
+"attack1": SubResource("Animation_1ctg1"),
 "combat_idle": SubResource("Animation_8l8tg"),
 "dodge": SubResource("Animation_s06q8"),
 "hit": SubResource("Animation_56nhs"),
@@ -310,6 +384,24 @@ transitions = ["Start", "combat_idle", SubResource("AnimationNodeStateMachineTra
 collision_layer = 2
 script = ExtResource("1_5copa")
 rotation_speed = 20.0
+
+[node name="Sword" type="Area3D" parent="."]
+transform = Transform3D(0.467892, 0.352577, 1.81715e-09, -0.149737, 0.794841, -0.263886, -0.09304, 0.493879, 0.424693, 0.954338, -0.00775558, 0.142159)
+collision_layer = 12
+collision_mask = 0
+
+[node name="SwordMesh" type="MeshInstance3D" parent="Sword"]
+transform = Transform3D(-2.30372e-08, -0.0540615, -0.499269, 2.18237e-08, 0.998538, -0.0270307, 0.5, -4.60745e-08, -2.18237e-08, -0.501747, 0.777865, -0.0822948)
+mesh = SubResource("CylinderMesh_isq8y")
+skeleton = NodePath("../..")
+
+[node name="SwordCast" type="ShapeCast3D" parent="Sword"]
+transform = Transform3D(0.599386, -0.0542683, 0, 0.0271341, 1.19877, 0, 0, 0, 0.6, -0.842786, 2.01063, 0.0234253)
+enabled = false
+shape = SubResource("CylinderShape3D_txj6h")
+collision_mask = 8
+collide_with_areas = true
+collide_with_bodies = false
 
 [node name="FSMController" type="Node" parent="."]
 script = ExtResource("2_yor52")

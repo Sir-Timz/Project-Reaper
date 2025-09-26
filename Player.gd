@@ -19,8 +19,6 @@ var playback
 var current_tree_node
 var parry_over = true
 
-
-@export var current_state = State.IDLE
 @export var speed := 5.0
 @export var dodge_speed = 500
 @export var sprint_speed := 8
@@ -45,20 +43,6 @@ var parry_over = true
 signal playerimready
 signal hit_received
 
-enum State {
-	IDLE,
-	WALK,
-	SPRINT,
-	COMBAT,
-	JUMP,
-	FALL,
-	ATTACK,
-	PARRY,
-	DODGE,
-	HIT,
-	RECOVER
-	}
-
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -66,28 +50,20 @@ func _ready():
 	emit_signal("playerimready", self)
 
 
-
 func _disable_camera():
 	camera.current = false
-	
+
 func _process(delta):
 	hori_pivot.rotate_y(hori_input)
 	vert_pivot.rotate_x(vert_input)
 	vert_pivot.rotation.x = clamp(vert_pivot.rotation.x, -0.5, 0.1)
 	hori_input = 0
 	vert_input = 0
-	#print(playback.get_current_node())
-	
-	#print("parry box monitorable: ", parry_box_parent.monitorable)
-	#print("parry box monitoring: ", parry_box_parent.monitoring)
-	#print("parry box enabled: ", !parry_box.disabled)
-	
 
 	if playback:
 		current_tree_node = playback.get_current_node()
 		#print(current_tree_node)
-		
-	
+
 
 
 
@@ -102,8 +78,6 @@ func _unhandled_input(event: InputEvent):
 			hori_input = - event.relative.x * mouse_sensitivity
 			vert_input = - event.relative.y * mouse_sensitivity
 	
-
-
 
 func _on_hurtbox_parent_area_entered(area):
 	fsm_controller.force_switch("hit")
@@ -127,7 +101,6 @@ func change_fsm(fsm):
 func on_tree_ready(node):
 	combat_anim_tree = node
 	playback = combat_anim_tree.get("parameters/playback") as AnimationNodeStateMachinePlayback
-	print("PLAYBACK SET")
 
 func disable_box(box):
 	match box:
@@ -136,10 +109,6 @@ func disable_box(box):
 		"parry":
 			add_child(parry_box_parent)
 			remove_child(parry_box_parent)
-			#print("disabling parry box")
-			#print("parry box monitorable: ", parry_box_parent.monitorable)
-			#print("parry box monitoring: ", parry_box_parent.monitoring)
-			#print("parry box enabled: ", !parry_box.disabled)
 
 func enable_box(box):
 	match box:
@@ -151,12 +120,7 @@ func enable_box(box):
 			parry_box_parent.monitoring = true
 			parry_box_parent.monitorable = true
 			parry_box.disabled = false
-			#parry_on = true
-			#print("parry box monitorable: ", parry_box_parent.monitorable)
-			#print("parry box monitoring: ", parry_box_parent.monitoring)
-			#print("parry box enabled: ", !parry_box.disabled)
-			
+
 func disable_parry_success():
 	parry_success = false
 	parry_over = true
-	print("parry success ", parry_success)
