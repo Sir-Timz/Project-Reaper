@@ -28,7 +28,7 @@ var parry_over = true
 
 @onready var hori_pivot = $HoriPivot
 @onready var vert_pivot = $HoriPivot/VertPivot
-@onready var model = $MeshInstance3D
+@onready var model = $"exported-model"
 @onready var anim_player = $AnimationPlayer
 @onready var camera = $HoriPivot/VertPivot/Camera3D
 @onready var hurtbox_parent = $HurtboxParent
